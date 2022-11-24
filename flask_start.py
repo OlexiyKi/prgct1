@@ -29,14 +29,14 @@ def get_pb_rates():
 
 
 @app.route("/password", methods=['GET'])
-def password():
+def get_password():
     """
     3) Створити вью-функцію, яка як параметри отримує імʼя та вік, а повертає фразу:
     "Привіт, імʼя! Твій пароль: пароль".
     Генерувати рандомний пароль, який містить стільки ж знаків, скільки вік користувача.
     """
-    name = request.args.get('name')
-    age = request.args.get('age')
+    name = request.args.get('name', default='No name')
+    age = request.args.get('age', default=0)
 
     result = create_password(name, age)
 
