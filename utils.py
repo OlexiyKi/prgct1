@@ -1,5 +1,5 @@
 import requests
-
+from random import randint
 from datetime import datetime
 from urllib import parse
 
@@ -89,4 +89,14 @@ def get_pb_exchange_rate(convert_currency: str,
 result = get_pb_exchange_rate('USD', 'PB', '01.11.2022')
 print(result)
 
+def create_password(name: str, age: int):
+    print('run def create_password')   #функция работает, этот принт не работает -- пока не яно чего
+    #импут не запускается, как передавать имя
+    name = 'Alex' #input('Your name: ')
+    age = 33      #int(input('Your age: '))
+    if 99 > age > 0:
+        password = ''
+        for i in range(age):
+            password += (chr(randint(48, 57)), chr(randint(65, 90)), chr(randint(97, 122)))[randint(0, 2)]
 
+    return f'Hello, {name}! Your pass is {password}'
