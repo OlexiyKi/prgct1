@@ -55,6 +55,7 @@ def get_currency_exchange_rate(currency_a: str,
 def get_pb_exchange_rate(convert_currency: str,
                          bank: str,
                          rate_date: str) -> str:
+
     params = {
         'json': '',
         'date': rate_date,  # TODO додати функцію валідації формату дати
@@ -68,14 +69,17 @@ def get_pb_exchange_rate(convert_currency: str,
         rates = json['exchangeRate']
         for rate in rates:
             if rate['currency'] == convert_currency:
-                if bank == 'NBU':
+                #if bank == 'NBU':
+                if bank in ('NBU', 'nbu'):
                     try:
                         sale_rate = rate['saleRateNB']
                         purchase_rate = rate['purchaseRateNB']
                         return f'Exchange rate UAH to {convert_currency} for {rate_date} at {bank}: sale={sale_rate}, purchase={purchase_rate}'
                     except:
                         return f'There is no exchange rate NBU for {convert_currency}'
-                elif bank == 'PB':
+                #elif bank == 'PB':
+                #добавляем пользователю возможность вариабильности выбора названия банка.
+                elif bank.lower() in ('pb', 'privatbank', 'privat bank', 'kolomoyskiy bank'):
                     try:
                         sale_rate = rate['saleRate']
                         purchase_rate = rate['purchaseRate']
@@ -86,8 +90,8 @@ def get_pb_exchange_rate(convert_currency: str,
         return f'error {response.status_code}'
 
 
-result = get_pb_exchange_rate('USD', 'PB', '01.11.2022')
-print(result)
+#result = get_pb_exchange_rate('USD', 'PB', '01.11.2022')
+#print(result)
 
 def create_password(name, age):
 
@@ -98,3 +102,18 @@ def create_password(name, age):
         return f'Hello, {name}! Your pass is {password}'
     else:
         return f'Check your data'
+
+
+def check_date(rate_date):
+    '''проверяем дату, если формат не ДД.ММ.ГГГГ -- конвертируем в требуемый'''
+
+    if '-' in rate_date:
+        rate_date = rate_date.replace('-', '.')
+    elif '.' not in rate_date and '-' not in rate_date:
+        rate_date = f'{rate_date[:2]}.{rate_date[2:4]}.{rate_date[4:]}'
+    else:
+        return rate_date
+    return rate_date
+
+#date = check_date('12092022')
+#print(date)

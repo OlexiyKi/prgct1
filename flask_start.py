@@ -1,6 +1,6 @@
 from flask import Flask, request
 from random import randint
-from utils import get_currency_exchange_rate, get_pb_exchange_rate, create_password
+from utils import get_currency_exchange_rate, get_pb_exchange_rate, create_password, check_date
 
 app = Flask(__name__)
 
@@ -23,6 +23,7 @@ def get_pb_rates():
     convert_currency = request.args.get('convert_currency', default='USD')     #вытаскиваем параметры с URL
     bank = request.args.get('bank', default='NBU') # TODO додати функцію валідації вводу банку
     rate_date = request.args.get('rate_date', default='01.11.2022')
+    rate_date = check_date(rate_date)
     # как request.args.get получает урл если еще не выполнился   resul
     result = get_pb_exchange_rate(convert_currency, bank, rate_date)           #запускаем основную ф-ю с параметрами с URL
     return result
@@ -39,5 +40,4 @@ def get_password():
     age = request.args.get('age', default=0)
 
     result = create_password(name, age)
-
     return result
